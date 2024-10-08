@@ -1,0 +1,35 @@
+﻿@model ItemList
+<div class="row">
+    <div class="col-12 mb-3">
+        <h2><a href="/List/Index"><i class="bi bi-arrow-left"></i></a>Edit @Model.Title</h2>
+    </div>
+</div>
+
+<div class="row">
+    <form action="/List/Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" id="exampleProductName" name="Id" value="@Model.Id">
+        <div class="mb-3">
+            <label for="exampleProductName" class="form-label">Title</label>
+            <input type="text" class="form-control" id="exampleProductName" name="Title" value="@Model.Title" >
+        </div>
+        <div class="mb-3">
+            <label for="exampleProductDescription" class="form-label">Description</label>
+            <input type="text" class="form-control" id="exampleProductDescription" name="Description" value="@Model.Description" >
+        </div>
+        <div class="mb-3">
+            <label for="exampleProductDescription" class="form-label">Deadline</label>
+            <input type="date" class="form-control" id="exampleProductDescription" name="Deadline" value="@Model.Deadline" >
+        </div>
+        <div class="mb-3">
+            <label for="exampleProductPhotoUrl" class="form-label">Img</label>
+            <input type="file" class="form-control" id="exampleProductPhotoUrl" name="PhotoUrl" accept="image/*" onchange="previewImage(event)" >
+        </div>
+        <div class="mb-3">
+            <img src="~/images/@Model.Img" alt="Image Preview" style="width: 200px; height: auto;" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+

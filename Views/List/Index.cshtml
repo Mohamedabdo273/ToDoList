@@ -1,0 +1,92 @@
+﻿@model IEnumerable<ItemList>
+
+@section Scripts {   
+    <script>
+        toastr.success('@Context.Request.Cookies["successCookies"]')
+    </script>
+}
+<div class="row">
+    <h1>Welcome, @ViewBag.Name</h1>
+    <p>Here is your to-do list:</p>
+</div>
+<div>
+    <a href="/List/Create" class="btn btn-primary">Create New</a>
+</div>
+<br />
+
+<div class="row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">File</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-light">
+                    <th scope="row">@item.Title</th>
+                    <td>@item.Description</td>
+                    <td>@item.Deadline</td>
+                    <td>
+                        @if (item.Img != null)
+                        {
+                            <a href="@Url.Content("~/images/"+item.Img)" download="@item.Img">
+                                <i class="bi bi-file-earmark-image"></i>@item.Img
+                            </a>
+                        }
+                        else
+                        {
+                            <span>No image available</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/List/Edit?Id=@item.Id" type="button" class="btn btn-dark">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <!-- Delete button -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteModal('@item.Id')">
+                            <i class="bi bi-trash3"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a href="/Home/Index" class="btn btn-secondary">Back To Home</a>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/List/Delete">
+                    <input type="hidden" id="deleteItemId" name="Id" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setDeleteModal(itemId) {
+        document.getElementById('deleteItemId').value = itemId;
+    }
+</script>
